@@ -16,8 +16,9 @@ COLORS = [
 if __name__ == "__main__":
     pygame.init()
 
-    index = 0
-    screen = pygame.display.set_mode((640, 360))
+    changed = True
+    index, last_index = 0, 0
+    screen = pygame.display.set_mode((640, 360), RESIZABLE)
 
     while True:
         for event in pygame.event.get():
@@ -29,5 +30,9 @@ if __name__ == "__main__":
                 elif event.key == K_RIGHT:
                     index = (index + 1) % len(COLORS)
 
-        screen.fill(COLORS[index])
-        pygame.display.update()
+        if index != last_index:
+            changed = True
+
+        if changed:
+            screen.fill(COLORS[index])
+            pygame.display.update()
