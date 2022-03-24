@@ -16,23 +16,30 @@ COLORS = [
 if __name__ == "__main__":
     pygame.init()
 
-    changed = True
-    index, last_index = 0, 0
+    index = 0
+    update_screen = True
     screen = pygame.display.set_mode((640, 360), RESIZABLE)
+
+    pygame.display.set_caption("PixelBuddy")
 
     while True:
         for event in pygame.event.get():
             if event.type == QUIT:
                 sys.exit()
             elif event.type == KEYDOWN:
+                last_index = index
+
                 if event.key == K_LEFT:
                     index = (index - 1) % len(COLORS)
                 elif event.key == K_RIGHT:
                     index = (index + 1) % len(COLORS)
 
-        if index != last_index:
-            changed = True
+                if index != last_index:
+                    update_screen = True  # update the color
+            elif event.type == VIDEORESIZE or event.type == VIDEOEXPOSE:
+                update_screen = True  # updates the screen when resized or minimized/maximized
 
-        if changed:
+        if update_screen:
             screen.fill(COLORS[index])
             pygame.display.update()
+            update_screen = False
